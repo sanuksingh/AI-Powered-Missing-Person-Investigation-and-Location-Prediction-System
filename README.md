@@ -1,57 +1,141 @@
 # AI-Powered Missing Person Investigation and Location Prediction System
 
-An AI-powered system designed to analyze GPS trajectory data, understand movement patterns, and predict probable locations to support missing-person investigation.
+An AI-powered web application that analyzes historical movement/trajectory data and predicts the possible location of a missing person based on learned movement patterns.
+
+## 👨‍💻 Developer
+
+**Sanu Kumar Singh**
+B.Tech — Artificial Intelligence
+
+---
 
 ## 📌 Project Overview
 
-The **AI-Powered Missing Person Investigation and Location Prediction System** uses GPS trajectory data and machine learning techniques to analyze movement behavior and estimate probable future locations.
+The **AI-Powered Missing Person Investigation and Location Prediction System** is a machine-learning-based application designed to assist in missing-person investigations.
 
-The system processes historical GPS trajectories, performs data cleaning and movement analysis, and provides location predictions through a web-based Flask application.
+The system processes historical GPS trajectory data, extracts movement-related features, trains a machine learning model, and predicts the possible geographical location of a missing person.
 
-## 🎯 Problem Statement
+The project combines **Machine Learning, Data Analysis, Python, and Flask** to provide a web-based prediction interface.
 
-Finding a missing person can be difficult when investigators have limited information about the person's recent movements.
+---
 
-This project aims to:
+## 🎯 Objectives
 
-* Analyze historical GPS trajectory data
-* Identify movement patterns
-* Clean and preprocess GPS data
-* Detect abnormal GPS/speed values
-* Extract useful movement features
-* Predict probable locations
-* Display results through a web interface
+* Analyze historical GPS movement data.
+* Identify movement patterns from trajectory data.
+* Clean and preprocess GPS data.
+* Extract useful features from geographical and temporal information.
+* Train a machine learning model for location prediction.
+* Evaluate the trained model using appropriate metrics.
+* Provide a simple web interface for making predictions.
+* Present prediction results in an understandable format.
 
-## ✨ Key Features
-
-* 📍 GPS trajectory data processing
-* 🧹 Data cleaning and preprocessing
-* 🚗 Movement and speed analysis
-* ⚠️ GPS speed outlier detection
-* 🤖 Machine learning-based location prediction
-* 📊 Prediction performance analysis
-* 🗺️ Map-based visualization
-* 🌐 Flask web application
-* 📈 Feature importance analysis
-* 📉 Actual vs predicted analysis
-* 📊 Error distribution analysis
+---
 
 ## 🛠️ Technologies Used
 
-| Technology       | Purpose              |
-| ---------------- | -------------------- |
-| Python           | Core programming     |
-| Pandas           | Data processing      |
-| NumPy            | Numerical operations |
-| Scikit-learn     | Machine learning     |
-| Flask            | Web application      |
-| Folium / Leaflet | Map visualization    |
-| Jupyter Notebook | Data analysis        |
-| HTML             | Web interface        |
-| CSS              | UI styling           |
-| Git & GitHub     | Version control      |
+* **Python**
+* **Machine Learning**
+* **Pandas**
+* **NumPy**
+* **Scikit-learn**
+* **Joblib**
+* **Flask**
+* **HTML**
+* **CSS**
+* **Matplotlib**
+* **Git & GitHub**
+* **Jupyter Notebook**
 
-## 📂 Project Structure
+---
+
+## 🧠 Machine Learning
+
+The project uses a machine learning approach to learn relationships between movement-related features and geographical location.
+
+### Data Processing
+
+The GPS trajectory data was processed to create useful features such as:
+
+* Latitude
+* Longitude
+* Altitude
+* Timestamp
+* Distance
+* Time difference
+* Speed
+* Cleaned speed
+* Hour
+* Weekday
+* Weekend indicator
+* Movement indicator
+* User ID
+
+The data was cleaned and invalid/outlier speed values were handled before model training.
+
+### Model
+
+The trained model is used to predict the geographical location associated with the input movement information.
+
+The trained deployment model is stored as:
+
+```text
+data/final_model/gps_location_prediction_deployment_model.pkl
+```
+
+The model is loaded using **Joblib** when the Flask application starts.
+
+---
+
+## 📊 Model Evaluation
+
+The project includes model evaluation and analysis files such as:
+
+* Final model metrics
+* Model summary
+* Feature importance
+* Largest prediction errors
+* Actual vs. predicted visualization
+* Error distribution
+* Accuracy/performance graph
+
+These files are stored inside:
+
+```text
+data/final_results/
+data/
+```
+
+---
+
+## 🌐 Web Application
+
+The project uses **Flask** to provide a web interface for the trained machine learning model.
+
+### Main Components
+
+```text
+app/
+├── app.py
+├── static/
+│   └── style.css
+└── templates/
+    ├── index.html
+    └── about.html
+```
+
+### Features
+
+* Web-based interface
+* User input for prediction
+* Machine learning model integration
+* Prediction result display
+* About/project information page
+* Custom CSS styling
+
+---
+
+## 📁 Project Structure
 
 ```text
 AI-Powered-Missing-Person-Investigation-and-Location-Prediction-System/
@@ -84,15 +168,15 @@ AI-Powered-Missing-Person-Investigation-and-Location-Prediction-System/
 ├── notebooks/
 │   └── 01_data_collection.ipynb
 │
-├── reports/
-│
-├── src/
-│
 ├── .gitignore
 └── README.md
 ```
 
-## 🔄 System Workflow
+> Large raw datasets, processed datasets, virtual environments, and model files are excluded from Git using `.gitignore`.
+
+---
+
+## 📈 Project Workflow
 
 ```text
 GPS Trajectory Data
@@ -101,113 +185,191 @@ Data Collection
         ↓
 Data Cleaning
         ↓
-Outlier Detection
-        ↓
 Feature Engineering
         ↓
-Movement Analysis
+Exploratory Data Analysis
         ↓
-Machine Learning Model
+Model Training
         ↓
-Location Prediction
+Model Evaluation
+        ↓
+Model Saving
         ↓
 Flask Web Application
         ↓
-Predicted Location
+Location Prediction
 ```
 
-## 🧹 Data Preprocessing
+---
 
-The GPS trajectory data goes through several preprocessing steps:
+## 📷 Application Screenshot
 
-1. Remove invalid GPS records
-2. Handle duplicate records
-3. Convert timestamps
-4. Calculate distance between GPS points
-5. Calculate time differences
-6. Calculate movement speed
-7. Detect abnormal speed values
-8. Handle speed outliers
-9. Extract time-based features
-10. Identify movement and stationary periods
+![Application Screenshot](screenshots/application-screenshot.png)
 
-## 📊 Model Evaluation
+> Replace `application-screenshot.png` with the exact name of the screenshot stored in the `screenshots` folder.
 
-The project includes several evaluation and analysis outputs:
+---
 
-* Model performance metrics
+## 🔍 Important Project Components
+
+### 1. Data Collection
+
+Historical GPS trajectory data is used as the basis for analyzing movement patterns.
+
+### 2. Data Preprocessing
+
+The collected GPS data is cleaned and transformed into a structured format suitable for machine learning.
+
+### 3. Feature Engineering
+
+Movement-related features such as distance, time difference, speed, hour, weekday, and movement status are generated.
+
+### 4. Machine Learning
+
+A machine learning model is trained using the processed trajectory data.
+
+### 5. Model Evaluation
+
+The model is evaluated using prediction metrics and visual analysis.
+
+### 6. Deployment
+
+The trained model is integrated into a Flask web application.
+
+### 7. Prediction
+
+The application accepts relevant input information and generates a predicted geographical location.
+
+---
+
+## 📊 Results and Analysis
+
+The repository contains generated analysis files including:
+
 * Feature importance
-* Largest prediction errors
-* Actual vs predicted visualization
-* Error distribution
+* Final model metrics
 * Model summary
+* Largest prediction errors
+* Actual vs. predicted results
+* Error distribution
+* Accuracy/performance visualization
 
-These outputs are stored inside the `data/` directory.
+These files can be used to understand the performance and behavior of the trained model.
 
-## 🌐 Web Application
+---
 
-The project includes a **Flask-based web application** that provides a user interface for the location prediction system.
+## 🔒 Data & GitHub
 
-To run the application:
+The project uses `.gitignore` to prevent large or unnecessary files from being uploaded to GitHub.
+
+Excluded files/folders include:
+
+```text
+venv/
+.venv/
+data/raw/
+data/processed/
+*.pkl
+*.joblib
+*.h5
+*.keras
+.env
+__pycache__/
+.ipynb_checkpoints/
+```
+
+This keeps the GitHub repository smaller and avoids uploading large datasets and local environment files.
+
+---
+
+## 🚀 How to Run the Project
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/sanuksingh/AI-Powered-Missing-Person-Investigation-and-Location-Prediction-System.git
+```
+
+### 2. Open the Project
+
+```bash
+cd AI-Powered-Missing-Person-Investigation-and-Location-Prediction-System
+```
+
+### 3. Create/Activate Virtual Environment
+
+On Windows PowerShell:
+
+```powershell
+.\venv\Scripts\Activate.ps1
+```
+
+If the virtual environment has not been created yet:
+
+```powershell
+python -m venv venv
+```
+
+Then activate it:
+
+```powershell
+.\venv\Scripts\Activate.ps1
+```
+
+### 4. Install Required Libraries
+
+Install the libraries required by the project, for example:
+
+```bash
+pip install flask pandas numpy scikit-learn joblib matplotlib
+```
+
+### 5. Run the Flask Application
+
+From the project root:
 
 ```bash
 python app/app.py
 ```
 
-The application can then be accessed through the local Flask server.
+The application will start on the local Flask server.
 
-## 📦 Dataset
+---
 
-This project uses GPS trajectory data for movement analysis.
+## 🧪 Development Tools
 
-The original and processed datasets are **not included in this GitHub repository** because of their large file size.
+The project was developed using:
 
-The following directories are intentionally excluded using `.gitignore`:
+* Python
+* Jupyter Notebook
+* VS Code
+* Git
+* GitHub
 
-```text
-data/raw/
-data/processed/
-```
+---
 
-Large trained model files such as `.pkl` are also excluded.
+## 📚 Dataset
 
-## 🔐 Large Files and GitHub
+The project uses GPS trajectory data for movement analysis and machine learning.
 
-Large datasets and trained model binaries are kept locally and are not committed to GitHub.
+The raw and processed datasets are intentionally excluded from the GitHub repository because of their large size.
 
-This keeps the repository lightweight and makes it easier to clone and manage.
+---
 
-## 🚀 Future Scope
+## ⚠️ Disclaimer
 
-Possible future improvements include:
+This project is an academic/technical demonstration of machine learning-based location prediction.
 
-* Real-time GPS tracking
-* Mobile application
-* Real-time location updates
-* More advanced trajectory prediction models
-* Integration with emergency services
-* Location confidence scoring
-* Multiple-person trajectory analysis
-* Cloud deployment
-* Secure investigator dashboard
-* Real-time alert generation
+Predicted locations should not be treated as confirmed real-world locations. Actual missing-person investigations require verified information and appropriate involvement of authorized authorities.
 
-## 👨‍💻 Developer
+---
+
+## 👨‍💻 Author
 
 **Sanu Kumar Singh**
 
 B.Tech — Artificial Intelligence
 
-### Skills Used
+### Technologies Used
 
-* Python
-* Data Structures & Algorithms with Java
-* Machine Learning
-* Flask
-* Streamlit
-* Git & GitHub
-* Data Analysis
-
-## ⭐ Project Purpose
-
-This project demonstrates the application of **Artificial Intelligence, Machine Learning, GPS trajectory analysis, and web development** to a real-world investigation and location prediction problem.
+**Python • Machine Learning • Pandas • NumPy • Scikit-learn • Flask • HTML • CSS • Matplotlib • Git • GitHub**
