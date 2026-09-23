@@ -437,12 +437,12 @@ Microsoft Geolife GPS Dataset
 Add your application screenshot to the `screenshots` folder and display it here.
 
 ```markdown
-![Application Screenshot](screenshots/application-screenshot.png)
+![Application Screenshot](home.png)
 ```
 
 Example:
 
-![Application Screenshot](screenshots/application-screenshot.png)
+![Application Screenshot](prediction.png)
 
 > Replace `application-screenshot.png` with the exact filename of your screenshot.
 
