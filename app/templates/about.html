@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About - GPS Next Location Prediction</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .about-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 35px;
+        }
+
+        .about-section {
+            background: #f7f9fc;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+        }
+
+        .about-section h2 {
+            color: #174a7e;
+            margin-top: 0;
+        }
+
+        .about-section p {
+            line-height: 1.7;
+        }
+
+        .about-section li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .metric {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px;
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 25px;
+            color: #1f5f9f;
+            margin-top: 8px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 22px;
+            background: #2868a8;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 700px) {
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container about-container">
+
+    <a href="/" class="back-button">
+        ← Back to Prediction
+    </a>
+
+    <h1>GPS Next-Location Prediction System</h1>
+
+    <p class="subtitle">
+        Machine Learning Based GPS Movement Prediction System
+    </p>
+
+
+    <!-- PROBLEM STATEMENT -->
+
+    <div class="about-section">
+
+        <h2>Problem Statement</h2>
+
+        <p>
+            The objective of this project is to develop a machine-learning-based
+            GPS movement prediction system that estimates a user's next geographic
+            location from historical GPS trajectory data.
+        </p>
+
+        <p>
+            The system processes location, movement, and temporal information and
+            provides the predicted next latitude and longitude through a web-based
+            interface.
+        </p>
+
+    </div>
+
+
+    <!-- OBJECTIVES -->
+
+    <div class="about-section">
+
+        <h2>Objectives</h2>
+
+        <ul>
+            <li>Process and clean historical GPS trajectory data.</li>
+            <li>Create movement and temporal features.</li>
+            <li>Predict the next latitude and longitude.</li>
+            <li>Evaluate geographic prediction error.</li>
+            <li>Deploy the trained model through Flask.</li>
+            <li>Visualize current and predicted locations on an interactive map.</li>
+        </ul>
+
+    </div>
+
+
+    <!-- METHODOLOGY -->
+
+    <div class="about-section">
+
+        <h2>Methodology</h2>
+
+        <ol>
+            <li>Load and preprocess GPS trajectory data.</li>
+            <li>Create previous and next location information.</li>
+            <li>Generate movement and time-based features.</li>
+            <li>Split users into training and testing groups.</li>
+            <li>Train a Random Forest regression model.</li>
+            <li>Predict next latitude and longitude.</li>
+            <li>Calculate geographic prediction error.</li>
+            <li>Save a lightweight deployment model.</li>
+            <li>Integrate the model with a Flask application.</li>
+            <li>Display predictions using an interactive map.</li>
+        </ol>
+
+    </div>
+
+
+    <!-- MODEL -->
+
+    <div class="about-section">
+
+        <h2>Machine Learning Model</h2>
+
+        <p>
+            The system uses a
+            <strong>Random Forest Multi-Output Regression</strong>
+            model.
+        </p>
+
+        <p>
+            The model predicts two outputs:
+        </p>
+
+        <ul>
+            <li>Next Latitude</li>
+            <li>Next Longitude</li>
+        </ul>
+
+    </div>
+
+
+    <!-- FEATURES -->
+
+    <div class="about-section">
+
+        <h2>Input Features</h2>
+
+        <ul>
+            <li>Current Latitude</li>
+            <li>Current Longitude</li>
+            <li>Previous Latitude</li>
+            <li>Previous Longitude</li>
+            <li>Altitude</li>
+            <li>Speed</li>
+            <li>Distance</li>
+            <li>Time Difference</li>
+            <li>Hour</li>
+            <li>Weekend Indicator</li>
+        </ul>
+
+    </div>
+
+
+    <!-- RESULTS -->
+
+    <div class="about-section">
+
+        <h2>Final Model Results</h2>
+
+        <div class="metric-grid">
+
+            <div class="metric">
+                Within 100 meters
+                <strong>76.99%</strong>
+            </div>
+
+            <div class="metric">
+                Within 1 kilometer
+                <strong>90.88%</strong>
+            </div>
+
+            <div class="metric">
+                Within 10 kilometers
+                <strong>93.99%</strong>
+            </div>
+
+            <div class="metric">
+                Median Error
+                <strong>20.24 m</strong>
+            </div>
+
+            <div class="metric">
+                Mean Error
+                <strong>43.80 km</strong>
+            </div>
+
+            <div class="metric">
+                ML Dataset
+                <strong>24.87M</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TECHNOLOGIES -->
+
+    <div class="about-section">
+
+        <h2>Technologies Used</h2>
+
+        <p>
+            Python · Pandas · NumPy · Scikit-learn · Random Forest ·
+            Joblib · Flask · HTML · CSS · Leaflet · OpenStreetMap
+        </p>
+
+    </div>
+
+
+    <!-- LIMITATIONS -->
+
+    <div class="about-section">
+
+        <h2>Limitations</h2>
+
+        <ul>
+            <li>Prediction quality varies with movement patterns.</li>
+            <li>Some predictions have very large geographic errors.</li>
+            <li>The current application uses manually entered GPS values.</li>
+            <li>Live GPS integration is not currently implemented.</li>
+            <li>Further validation would be required for real-world deployment.</li>
+        </ul>
+
+    </div>
+
+
+    <!-- FUTURE SCOPE -->
+
+    <div class="about-section">
+
+        <h2>Future Scope</h2>
+
+        <ul>
+            <li>Live GPS tracking integration.</li>
+            <li>LSTM/GRU/Transformer-based trajectory prediction.</li>
+            <li>Prediction confidence and uncertainty estimation.</li>
+            <li>Trajectory history visualization.</li>
+            <li>Mobile application integration.</li>
+            <li>Cloud deployment.</li>
+        </ul>
+
+    </div>
+
+</div>
+
+</body>
+</html>

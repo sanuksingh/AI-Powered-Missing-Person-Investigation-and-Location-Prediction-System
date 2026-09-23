@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>GPS Next Location Prediction</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='style.css') }}">
+
+    <!-- Leaflet Map -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <style>
+
+        /* =====================================================
+           MAP
+        ===================================================== */
+
+        #map {
+
+            width: 100%;
+            height: 450px;
+
+            margin-top: 25px;
+
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            border: 1px solid #ddd;
+
+        }
+
+
+        /* =====================================================
+           DISTANCE RESULT
+        ===================================================== */
+
+        .distance-result {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #eef8f1;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+        }
+
+        .distance-result h3 {
+
+            margin-top: 0;
+
+            color: #176b3a;
+
+        }
+
+        .distance-value {
+
+            font-size: 26px;
+
+            font-weight: bold;
+
+            color: #1f4f8a;
+
+        }
+
+
+        /* =====================================================
+           MAP LEGEND
+        ===================================================== */
+
+        .map-info {
+
+            margin-top: 15px;
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 30px;
+
+            flex-wrap: wrap;
+
+            font-weight: bold;
+
+        }
+
+        .current-marker {
+
+            color: #16803c;
+
+        }
+
+        .predicted-marker {
+
+            color: #d62828;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1>GPS Next Location Prediction</h1>
+
+    <p class="subtitle">
+        Machine Learning Based GPS Movement Prediction System
+    </p>
+
+
+    <!-- =====================================================
+         INPUT FORM
+    ====================================================== -->
+
+    <form action="/predict"
+          method="POST">
+
+
+        <div class="form-grid">
+
+
+            <div class="input-group">
+
+                <label>
+                    Current Latitude
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    name="latitude"
+                    value="{{ current_latitude if current_latitude is defined else '39.984' }}"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Current Longitude
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    name="longitude"
+                    value="{{ current_longitude if current_longitude is defined else '116.318' }}"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Previous Latitude
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    name="previous_latitude"
+                    value="{{ previous_latitude if previous_latitude is defined else '39.983' }}"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Previous Longitude
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    name="previous_longitude"
+                    value="{{ previous_longitude if previous_longitude is defined else '116.317' }}"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Altitude (m)
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    name="altitude"
+                    value="{{ altitude if altitude is defined else '5' }}"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Speed (km/h)
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    name="clean_speed_kmh"
+                    value="{{ clean_speed_kmh if clean_speed_kmh is defined else '20' }}"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Distance (m)
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    name="distance_m"
+                    value="{{ distance_m if distance_m is defined else '100' }}"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Time Difference (seconds)
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    name="time_diff_sec"
+                    value="{{ time_diff_sec if time_diff_sec is defined else '10' }}"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Hour (0-23)
+                </label>
+
+                <input
+                    type="number"
+                    min="0"
+                    max="23"
+                    name="hour"
+                    value="{{ hour if hour is defined else '14' }}"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Weekend?
+                </label>
+
+                <select name="is_weekend">
+
+                    <option
+                        value="0"
+                        {% if is_weekend is defined and is_weekend == 0 %}
+                        selected
+                        {% endif %}
+                    >
+                        No
+                    </option>
+
+                    <option
+                        value="1"
+                        {% if is_weekend is defined and is_weekend == 1 %}
+                        selected
+                        {% endif %}
+                    >
+                        Yes
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <button type="submit">
+
+            Predict Next Location
+
+        </button>
+
+
+    </form>
+
+
+    <!-- =====================================================
+         PREDICTION RESULT
+    ====================================================== -->
+
+    {% if prediction %}
+
+    <div class="result">
+
+        <h2>
+            Predicted Next Location
+        </h2>
+
+        <div class="coordinates">
+
+            <div>
+
+                <span>
+                    Latitude
+                </span>
+
+                <strong>
+                    {{ predicted_latitude }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Longitude
+                </span>
+
+                <strong>
+                    {{ predicted_longitude }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DISTANCE
+    ====================================================== -->
+
+    <div class="distance-result">
+
+        <h3>
+            Distance to Predicted Location
+        </h3>
+
+        <div class="distance-value">
+
+            {{ prediction_distance_km }} km
+
+        </div>
+
+        <p>
+
+            Approximately
+            {{ prediction_distance_m }} meters
+
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAP
+    ====================================================== -->
+
+    <div class="map-info">
+
+        <span class="current-marker">
+            🟢 Current Location
+        </span>
+
+        <span class="predicted-marker">
+            🔴 Predicted Location
+        </span>
+
+    </div>
+
+
+    <div id="map"></div>
+
+
+    <!-- =====================================================
+         LEAFLET JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+
+    <script>
+
+        // ----------------------------------------------------
+        // Coordinates from Flask
+        // ----------------------------------------------------
+
+        const currentLat =
+            {{ current_latitude }};
+
+        const currentLon =
+            {{ current_longitude }};
+
+        const predictedLat =
+            {{ predicted_latitude }};
+
+        const predictedLon =
+            {{ predicted_longitude }};
+
+
+        // ----------------------------------------------------
+        // Create map
+        // ----------------------------------------------------
+
+        const map = L.map("map");
+
+
+        // ----------------------------------------------------
+        // OpenStreetMap tiles
+        // ----------------------------------------------------
+
+       L.tileLayer(
+    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+        maxZoom: 19,
+
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+    }
+).addTo(map);
+
+        // ----------------------------------------------------
+        // Current location marker
+        // ----------------------------------------------------
+
+        const currentMarker = L.marker(
+            [currentLat, currentLon]
+        ).addTo(map);
+
+
+        currentMarker.bindPopup(
+            "<b>Current Location</b><br>" +
+            "Latitude: " + currentLat + "<br>" +
+            "Longitude: " + currentLon
+        );
+
+
+        // ----------------------------------------------------
+        // Predicted location marker
+        // ----------------------------------------------------
+
+        const predictedMarker = L.marker(
+            [predictedLat, predictedLon]
+        ).addTo(map);
+
+
+        predictedMarker.bindPopup(
+            "<b>Predicted Next Location</b><br>" +
+            "Latitude: " + predictedLat + "<br>" +
+            "Longitude: " + predictedLon
+        );
+
+
+        // ----------------------------------------------------
+        // Draw movement line
+        // ----------------------------------------------------
+
+        const routeLine = L.polyline(
+            [
+                [currentLat, currentLon],
+                [predictedLat, predictedLon]
+            ],
+            {
+                color: "#d62828",
+                weight: 4,
+                opacity: 0.8
+            }
+        ).addTo(map);
+
+
+        // ----------------------------------------------------
+        // Automatically fit map
+        // ----------------------------------------------------
+
+        const bounds = L.latLngBounds(
+            [
+                [currentLat, currentLon],
+                [predictedLat, predictedLon]
+            ]
+        );
+
+        map.fitBounds(bounds, {
+            padding: [50, 50]
+        });
+
+
+        // ----------------------------------------------------
+        // Open current location popup initially
+        // ----------------------------------------------------
+
+        currentMarker.openPopup();
+
+    </script>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         ERROR
+    ====================================================== -->
+
+    {% if error %}
+
+    <div class="error">
+
+        <strong>Error:</strong>
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+
+</div>
+
+</body>
+
+</html>

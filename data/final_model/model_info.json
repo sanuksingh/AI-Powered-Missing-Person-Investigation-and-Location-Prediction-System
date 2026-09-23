@@ -1,0 +1,21 @@
+{
+    "features": [
+        "latitude",
+        "longitude",
+        "previous_latitude",
+        "previous_longitude",
+        "altitude",
+        "clean_speed_kmh",
+        "distance_m",
+        "time_diff_sec",
+        "hour",
+        "is_weekend"
+    ],
+    "targets": [
+        "next_latitude",
+        "next_longitude"
+    ],
+    "model": "RandomForestRegressor",
+    "n_estimators": 100,
+    "random_state": 42
+}

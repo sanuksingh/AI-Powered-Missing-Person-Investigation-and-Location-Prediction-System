@@ -1,0 +1,6 @@
+metric,value
+mean_error_m,43799.386618647724
+median_error_m,20.23587952541434
+minimum_error_m,0.027011118862433747
+maximum_error_m,2554491.588843843
+total_predictions,100000.0

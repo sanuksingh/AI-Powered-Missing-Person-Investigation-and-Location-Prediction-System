@@ -1,0 +1,12 @@
+Parameter,Value
+Project,GPS Location Prediction System
+Dataset_Rows,24876613
+Total_Users,182
+Training_Users,145
+Testing_Users,37
+Training_Sample,500000
+Testing_Sample,100000
+Model,Random Forest Regressor
+Estimators,100
+Target_1,next_latitude
+Target_2,next_longitude

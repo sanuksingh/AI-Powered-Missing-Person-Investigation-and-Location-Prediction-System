@@ -1,0 +1,12 @@
+Metric,Value
+Mean Prediction Error,"43,799.39 meters"
+Median Prediction Error,20.24 meters
+Minimum Prediction Error,0.03 meters
+Maximum Prediction Error,"2,554,491.59 meters"
+Accuracy within 10 meters,31.89%
+Accuracy within 50 meters,68.37%
+Accuracy within 100 meters,76.99%
+Accuracy within 500 meters,88.80%
+Accuracy within 1 kilometer,90.88%
+Accuracy within 5 kilometers,93.25%
+Accuracy within 10 kilometers,93.99%
